@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="16" fill="#0B0E11"/>
+  
+  <!-- Last Low Level -->
+  <path d="M64 300H448" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="12 12" opacity="0.3"/>
+  <text x="380" y="330" fill="#FFFFFF" font-family="Arial" font-size="24" font-weight="bold" opacity="0.5">Last Low</text>
+
+  <!-- Uptrend ending -->
+  <rect x="100" y="200" width="30" height="80" fill="#00C853" rx="4"/>
+  
+  <!-- Rejection / Top -->
+  <rect x="160" y="180" width="30" height="40" fill="#FF3D00" rx="4"/>
+  <line x1="175" y1="150" x2="175" y2="230" stroke="#FF3D00" stroke-width="4"/>
+
+  <!-- CHoCH Candle (Bearish Engulfing Break) -->
+  <rect x="220" y="250" width="40" height="120" fill="#FF3D00" rx="4"/>
+  <line x1="240" y1="240" x2="240" y2="380" stroke="#FF3D00" stroke-width="4"/>
+
+  <!-- Break Marker -->
+  <line x1="200" y1="300" x2="300" y2="300" stroke="#FF3D00" stroke-width="6"/>
+  <circle cx="240" cy="300" r="60" stroke="#FF3D00" stroke-width="4" stroke-dasharray="8 4"/>
+  
+  <text x="260" y="380" fill="#FF3D00" font-family="Arial" font-size="32" font-weight="bold">CHoCH</text>
+  
+  <!-- Reversal Arrow -->
+  <path d="M320 350L360 400L400 350" stroke="#FF3D00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

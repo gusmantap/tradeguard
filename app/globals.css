@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: var(--font-mono);
+
+  --color-background: #020617; /* Slate 950 */
+  --color-foreground: #e2e8f0; /* Slate 200 */
+
+  --color-trading-bg: #020617;
+  --color-trading-card: #0f172a; /* Slate 900 */
+  --color-trading-border: #1e293b; /* Slate 800 */
+
+  --color-trading-primary: #2563eb; /* Blue 600 */
+  --color-trading-success: #22c55e; /* Green 500 */
+  --color-trading-danger: #ef4444; /* Red 500 */
+  --color-trading-warning: #eab308; /* Yellow 500 */
+
+  --color-trading-text-primary: #e2e8f0; /* Slate 200 */
+  --color-trading-text-secondary: #94a3b8; /* Slate 400 */
+  --color-trading-text-muted: #64748b; /* Slate 500 */
+
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+:root {
+  --background: #020617;
+  --foreground: #e2e8f0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}

@@ -1,0 +1,36 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="16" fill="#0B0E11"/>
+  
+  <!-- Grid -->
+  <path d="M0 128H512" stroke="#1F2937" stroke-width="2" stroke-dasharray="8 8"/>
+  <path d="M0 256H512" stroke="#1F2937" stroke-width="2" stroke-dasharray="8 8"/>
+  <path d="M0 384H512" stroke="#1F2937" stroke-width="2" stroke-dasharray="8 8"/>
+
+  <!-- Trend Line -->
+  <path d="M64 100L448 400" stroke="#FF3D00" stroke-width="4" stroke-dasharray="16 8" opacity="0.5"/>
+
+  <!-- Candles: LH LL Structure -->
+  <!-- High -->
+  <rect x="80" y="100" width="30" height="60" fill="#FF3D00" rx="4"/>
+  <line x1="95" y1="80" x2="95" y2="180" stroke="#FF3D00" stroke-width="4"/>
+
+  <!-- Retest Up -->
+  <rect x="130" y="140" width="30" height="40" fill="#00C853" rx="4"/>
+  <line x1="145" y1="130" x2="145" y2="190" stroke="#00C853" stroke-width="4"/>
+
+  <!-- Breakout Down -->
+  <rect x="180" y="180" width="30" height="100" fill="#FF3D00" rx="4"/>
+  <line x1="195" y1="160" x2="195" y2="300" stroke="#FF3D00" stroke-width="4"/>
+
+  <!-- LH -->
+  <rect x="230" y="220" width="30" height="30" fill="#00C853" rx="4"/>
+  <line x1="245" y1="210" x2="245" y2="260" stroke="#00C853" stroke-width="4"/>
+
+  <!-- LL -->
+  <rect x="280" y="280" width="30" height="110" fill="#FF3D00" rx="4"/>
+  <line x1="295" y1="260" x2="295" y2="410" stroke="#FF3D00" stroke-width="4"/>
+  
+  <!-- Arrow -->
+  <path d="M400 400L420 420L440 400" stroke="#FF3D00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M420 420V340" stroke="#FF3D00" stroke-width="8" stroke-linecap="round"/>
+</svg>

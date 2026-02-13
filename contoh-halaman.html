@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>TradeGuard Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              slate: {
+                850: "#1e293b",
+                900: "#0f172a",
+                950: "#020617",
+              },
+            },
+            boxShadow: {
+              glow: "0 0 20px rgba(59, 130, 246, 0.4)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #020617;
+        color: #e2e8f0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Chart Styles */
+      .chart-placeholder {
+        width: 100%;
+        height: 80px;
+        background: #0f172a;
+        position: relative;
+        overflow: hidden;
+        border-radius: 6px;
+        margin-bottom: 8px;
+      }
+      .line-uptrend {
+        position: absolute;
+        width: 120%;
+        height: 2px;
+        background: #22c55e;
+        bottom: 20px;
+        left: -10%;
+        transform: rotate(-20deg);
+      }
+      .line-downtrend {
+        position: absolute;
+        width: 120%;
+        height: 2px;
+        background: #ef4444;
+        top: 20px;
+        left: -10%;
+        transform: rotate(20deg);
+      }
+      .candle {
+        position: absolute;
+        width: 4px;
+        background: #475569;
+      }
+
+      .step-card.selected {
+        border-color: #3b82f6;
+        background-color: #172554;
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+      }
+      .nav-item.active {
+        color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen flex flex-col overflow-hidden font-sans text-sm select-none"
+  >
+    <!-- === AUTH GATE / LOGIN SCREEN === -->
+    <div
+      id="auth-gate"
+      class="absolute inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 transition-transform duration-500"
+    >
+      <div class="mb-8 text-center">
+        <div
+          class="w-20 h-20 bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-800 shadow-glow"
+        >
+          <i class="fa-solid fa-shield-halved text-blue-500 text-4xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-white font-mono tracking-tighter">
+          TradeGuard Pro
+        </h1>
+        <p class="text-slate-500 text-xs mt-2">Versi 1.0.2 (Licensed)</p>
+      </div>
+
+      <div class="w-full max-w-xs space-y-4">
+        <!-- Simulated Google Login Button -->
+        <button
+          onclick="mockGoogleLogin()"
+          class="w-full bg-white text-slate-900 font-bold py-3 rounded-xl flex items-center justify-center space-x-3 hover:bg-slate-200 transition"
+        >
+          <i class="fa-brands fa-google text-lg"></i>
+          <span>Sign in with Google</span>
+        </button>
+        <p class="text-[10px] text-center text-slate-600 mt-4">
+          Anti-Piracy Protected. <br />Login diperlukan hanya saat instalasi
+          pertama.
+        </p>
+      </div>
+
+      <!-- Loading State (Hidden by default) -->
+      <div
+        id="auth-loading"
+        class="hidden absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center z-50"
+      >
+        <i
+          class="fa-solid fa-circle-notch fa-spin text-blue-500 text-3xl mb-3"
+        ></i>
+        <p class="text-xs text-blue-400 font-mono animate-pulse">
+          Verifying License...
+        </p>
+      </div>
+    </div>
+    <!-- === END AUTH GATE === -->
+
+    <!-- === MAIN APP (Hidden Initially) === -->
+    <div
+      id="app-container"
+      class="flex flex-col h-full opacity-0 transition-opacity duration-1000"
+    >
+      <!-- Header -->
+      <header
+        class="h-14 bg-slate-900/90 backdrop-blur border-b border-slate-800 flex items-center justify-between px-4 z-20"
+      >
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-blue-500 text-lg"></i>
+          <h1 class="font-bold font-mono tracking-tighter text-white">
+            TradeGuard
+          </h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] text-slate-400 uppercase">User</span>
+            <span
+              id="user-email-display"
+              class="font-mono font-bold text-blue-400 text-xs"
+              >...</span
+            >
+          </div>
+          <div
+            onclick="logout()"
+            class="text-slate-600 hover:text-red-500 cursor-pointer"
+          >
+            <i class="fa-solid fa-power-off text-xs"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main
+        class="flex-1 overflow-y-auto no-scrollbar relative bg-slate-950 pb-20"
+        id="main-scroll"
+      >
+        <!-- View: New Trade -->
+        <div id="view-new-trade" class="min-h-full flex flex-col">
+          <div
+            class="sticky top-0 z-10 bg-slate-950/80 backdrop-blur border-b border-slate-800 px-4 py-3 flex justify-between items-center shadow-lg"
+          >
+            <div>
+              <span
+                class="text-[10px] font-mono text-blue-400 uppercase tracking-widest block"
+                >Step <span id="step-number">1</span>/5</span
+              >
+              <h2
+                id="step-title"
+                class="text-sm font-bold text-white truncate w-48"
+              >
+                Market Structure
+              </h2>
+            </div>
+            <div
+              class="bg-slate-800 px-3 py-1 rounded-full border border-slate-700"
+            >
+              <span
+                id="live-score"
+                class="font-mono font-bold text-white text-sm"
+                >0</span
+              >
+            </div>
+          </div>
+          <div class="h-1 bg-slate-800 w-full">
+            <div
+              id="progress-bar"
+              class="h-full bg-blue-600 transition-all duration-300"
+              style="width: 20%"
+            ></div>
+          </div>
+
+          <div class="flex-1 p-4 pb-24">
+            <div id="wizard-content" class="space-y-4"></div>
+          </div>
+
+          <div
+            id="fab-container"
+            class="fixed bottom-20 left-0 w-full px-4 z-20"
+          >
+            <button
+              id="btn-next"
+              onclick="nextStep()"
+              class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-glow flex items-center justify-center transition-all"
+            >
+              <span>Next Validation</span>
+              <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- View: Journal -->
+        <div id="view-journal" class="hidden p-4 pb-24">
+          <h2 class="text-xl font-bold mb-4 text-white">Trading Log</h2>
+          <div id="journal-list" class="space-y-3"></div>
+          <div
+            id="empty-journal"
+            class="flex flex-col items-center justify-center py-20 text-slate-500 hidden"
+          >
+            <i class="fa-solid fa-folder-open text-2xl opacity-50 mb-4"></i>
+            <p>Belum ada data trading.</p>
+          </div>
+        </div>
+
+        <!-- View: Stats -->
+        <div
+          id="view-stats"
+          class="hidden p-4 flex flex-col items-center justify-center h-full text-slate-500"
+        >
+          <i class="fa-solid fa-chart-simple text-4xl mb-4 text-slate-700"></i>
+          <p>Fitur Statistik segera hadir.</p>
+        </div>
+      </main>
+
+      <!-- Navigation -->
+      <nav
+        class="fixed bottom-0 w-full h-16 bg-slate-900 border-t border-slate-800 grid grid-cols-3 z-30 pb-safe"
+      >
+        <button
+          onclick="switchView('new-trade')"
+          class="nav-item active flex flex-col items-center justify-center text-slate-500 transition-colors"
+          id="nav-trade"
+        >
+          <i class="fa-solid fa-plus-circle text-xl mb-1"></i>
+          <span class="text-[10px]">Trade</span>
+        </button>
+        <button
+          onclick="switchView('journal')"
+          class="nav-item flex flex-col items-center justify-center text-slate-500 transition-colors"
+          id="nav-journal"
+        >
+          <i class="fa-solid fa-book text-xl mb-1"></i>
+          <span class="text-[10px]">Journal</span>
+        </button>
+        <button
+          onclick="switchView('stats')"
+          class="nav-item flex flex-col items-center justify-center text-slate-500 transition-colors"
+          id="nav-stats"
+        >
+          <i class="fa-solid fa-user text-xl mb-1"></i>
+          <span class="text-[10px]">Profile</span>
+        </button>
+      </nav>
+    </div>
+
+    <script>
+      // === AUTH & LICENSE LOGIC ===
+
+      function checkAuth() {
+        // Cek apakah ada token lisensi tersimpan
+        const user = localStorage.getItem("tg_user");
+        if (user) {
+          // User sudah pernah login, langsung masuk (OFFLINE MODE READY)
+          unlockApp(JSON.parse(user));
+        } else {
+          // Belum login, tetap di Auth Gate
+        }
+      }
+
+      function mockGoogleLogin() {
+        // INI SIMULASI: Nanti diganti dengan Capacitor Google Auth Plugin
+        document.getElementById("auth-loading").classList.remove("hidden");
+
+        setTimeout(() => {
+          // Simulasi Sukses Login
+          const mockUser = {
+            email: "trader@gmail.com", // Nanti ini ambil dari Google
+            licenseKey: "TG-PRO-" + Date.now(),
+            installDate: new Date().toISOString(),
+          };
+
+          // SIMULASI CEK DATABASE (Anti-Bajak)
+          // Disini nanti logic: if (email_is_paid_user) { ... }
+
+          localStorage.setItem("tg_user", JSON.stringify(mockUser));
+          unlockApp(mockUser);
+        }, 1500);
+      }
+
+      function unlockApp(user) {
+        document.getElementById("user-email-display").innerText =
+          user.email.split("@")[0];
+
+        // Animasi transisi
+        const gate = document.getElementById("auth-gate");
+        gate.style.transform = "translateY(-100%)";
+
+        document.getElementById("app-container").classList.remove("opacity-0");
+
+        // Start App Logic
+        init();
+      }
+
+      function logout() {
+        if (
+          confirm("Logout akan menghapus lisensi offline di HP ini. Lanjut?")
+        ) {
+          localStorage.removeItem("tg_user");
+          location.reload();
+        }
+      }
+
+      // === APP LOGIC (Sama seperti sebelumnya) ===
+      let currentStep = 1;
+      let totalSteps = 5;
+      let tradeData = {
+        score: 0,
+        pair: "XAUUSD",
+        answers: {},
+        risk: {},
+        notes: "",
+      };
+
+      const steps = [
+        {
+          id: 1,
+          title: "Major Trend (H1)",
+          question: "Lihat H1. Apa struktur market besarnya?",
+          options: [
+            {
+              id: "s1_a",
+              val: 10,
+              label: "Uptrend",
+              desc: "Higher High & Higher Low",
+              icon: "fa-arrow-trend-up",
+              color: "text-green-500",
+            },
+            {
+              id: "s1_b",
+              val: 10,
+              label: "Downtrend",
+              desc: "Lower High & Lower Low",
+              icon: "fa-arrow-trend-down",
+              color: "text-red-500",
+            },
+            {
+              id: "s1_c",
+              val: -999,
+              label: "Sideways",
+              desc: "Market Datar (No Trade)",
+              icon: "fa-arrows-left-right",
+              color: "text-yellow-500",
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: "Trendline Check",
+          question: "Posisi harga relatif ke garis trend?",
+          options: [
+            {
+              id: "s2_a",
+              val: 15,
+              label: "Retest / Pantulan",
+              desc: "Harga menyentuh garis & reject.",
+              icon: "fa-check-double",
+            },
+            {
+              id: "s2_b",
+              val: 10,
+              label: "Breakout Valid",
+              desc: "Candle tebal tembus garis.",
+              icon: "fa-burst",
+            },
+            {
+              id: "s2_c",
+              val: -50,
+              label: "Ngambang",
+              desc: "Jauh dari garis manapun.",
+              icon: "fa-ghost",
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: "Trigger (M15)",
+          question: "Apa pemicu entry di M15?",
+          options: [
+            {
+              id: "s3_a",
+              val: 20,
+              label: "Break Counter TL",
+              desc: "Garis koreksi ditembus.",
+              icon: "fa-scissors",
+            },
+            {
+              id: "s3_b",
+              val: 15,
+              label: "Candle Rejection",
+              desc: "Pinbar / Engulfing.",
+              icon: "fa-ruler-vertical",
+            },
+            {
+              id: "s3_c",
+              val: -999,
+              label: "Feeling / Insting",
+              desc: "Tanpa dasar teknikal.",
+              icon: "fa-brain",
+            },
+          ],
+        },
+      ];
+
+      function init() {
+        renderStep();
+        loadJournal();
+      }
+
+      function switchView(viewName) {
+        ["new-trade", "journal", "stats"].forEach((v) => {
+          document.getElementById("view-" + v).classList.add("hidden");
+          document
+            .getElementById("nav-" + v.replace("new-", ""))
+            .classList.remove("active", "text-blue-500");
+        });
+        document.getElementById("view-" + viewName).classList.remove("hidden");
+        const navId = viewName === "new-trade" ? "trade" : viewName;
+        document
+          .getElementById("nav-" + navId)
+          .classList.add("active", "text-blue-500");
+
+        if (viewName === "new-trade") {
+          document.getElementById("fab-container").classList.remove("hidden");
+          resetWizard();
+        } else {
+          document.getElementById("fab-container").classList.add("hidden");
+          if (viewName === "journal") loadJournal();
+        }
+      }
+
+      function resetWizard() {
+        currentStep = 1;
+        tradeData = {
+          score: 0,
+          pair: "XAUUSD",
+          answers: {},
+          risk: {},
+          notes: "",
+        };
+        renderStep();
+      }
+
+      function renderStep() {
+        const container = document.getElementById("wizard-content");
+        const scoreEl = document.getElementById("live-score");
+        const nextBtn = document.getElementById("btn-next");
+
+        document.getElementById("progress-bar").style.width =
+          `${(currentStep / totalSteps) * 100}%`;
+        scoreEl.innerText = calculateScore();
+        document.getElementById("step-number").innerText = currentStep;
+
+        const currentScore = calculateScore();
+        scoreEl.className = `font-mono font-bold text-sm ${currentScore < 0 ? "text-red-500" : currentScore > 50 ? "text-green-400" : "text-yellow-400"}`;
+        document.getElementById("main-scroll").scrollTop = 0;
+
+        if (currentStep <= 3) {
+          const stepData = steps[currentStep - 1];
+          document.getElementById("step-title").innerText = stepData.title;
+          let html = `<p class="text-slate-400 mb-4 text-sm font-medium leading-relaxed">${stepData.question}</p>`;
+          html += `<div class="grid grid-cols-1 gap-3">`;
+          stepData.options.forEach((opt) => {
+            const isSelected =
+              tradeData.answers[`step_${currentStep}`] === opt.id;
+            html += `
+                        <div onclick="selectOption(${currentStep}, '${opt.id}', ${opt.val})" class="step-card cursor-pointer bg-slate-900 rounded-xl p-3 flex items-center relative ${isSelected ? "selected" : ""}">
+                            <div class="w-12 h-12 flex-shrink-0 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center mr-4 text-slate-600">
+                                <i class="fa-solid ${opt.icon} text-2xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-slate-200 text-sm ${opt.color || ""}">${opt.label}</h3>
+                                <p class="text-[11px] text-slate-500 leading-tight mt-1">${opt.desc}</p>
+                            </div>
+                            <div class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center ml-2 ${isSelected ? "bg-blue-500 border-blue-500" : ""}">
+                                ${isSelected ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : ""}
+                            </div>
+                        </div>`;
+          });
+          html += `</div>`;
+          container.innerHTML = html;
+          nextBtn.innerHTML = `<span>Lanjut</span> <i class="fa-solid fa-arrow-right ml-2"></i>`;
+          nextBtn.classList.remove("hidden");
+        } else if (currentStep === 4) {
+          // Simplified for brevity in this merged file
+          document.getElementById("step-title").innerText = "Risk & Psychology";
+          container.innerHTML = `<div class="p-4 bg-slate-900 rounded border border-slate-800 text-center"><p class="text-slate-400">Risk Calculator UI here...</p><button onclick="nextStep()" class="mt-4 bg-blue-600 px-4 py-2 rounded text-white">Simulasi Selesai</button></div>`;
+        } else if (currentStep === 5) {
+          const finalScore = calculateScore();
+          container.innerHTML = `<div class="text-center mt-10"><h1 class="text-4xl font-bold text-white">${finalScore}</h1><p class="text-slate-500">Score Final</p></div>`;
+          nextBtn.innerHTML = `<span>Save Trade</span>`;
+          nextBtn.onclick = saveToJournal;
+        }
+      }
+
+      function selectOption(step, optionId, val) {
+        tradeData.answers[`step_${step}`] = optionId;
+        tradeData.answers[`val_${step}`] = val;
+        renderStep();
+      }
+      function calculateScore() {
+        let score = 0;
+        for (let i = 1; i <= 3; i++)
+          if (tradeData.answers[`val_${i}`])
+            score += tradeData.answers[`val_${i}`];
+        return Math.max(0, Math.min(100, score));
+      }
+      function nextStep() {
+        if (currentStep < 5) {
+          currentStep++;
+          renderStep();
+        }
+      }
+
+      function saveToJournal() {
+        const newEntry = {
+          id: Date.now(),
+          pair: "XAUUSD",
+          score: calculateScore(),
+          date: new Date().toLocaleDateString(),
+        };
+        let journal = JSON.parse(localStorage.getItem("tg_journal")) || [];
+        journal.unshift(newEntry);
+        localStorage.setItem("tg_journal", JSON.stringify(journal));
+        switchView("journal");
+      }
+      function loadJournal() {
+        const journal = JSON.parse(localStorage.getItem("tg_journal")) || [];
+        const el = document.getElementById("journal-list");
+        el.innerHTML = journal.length
+          ? journal
+              .map(
+                (t) =>
+                  `<div class="bg-slate-900 p-3 rounded border border-slate-800 text-white flex justify-between"><span>${t.pair}</span><span class="font-bold ${t.score > 50 ? "text-green-400" : "text-red-400"}">${t.score}</span></div>`,
+              )
+              .join("")
+          : "";
+        document
+          .getElementById("empty-journal")
+          .classList.toggle("hidden", journal.length > 0);
+      }
+
+      // Jalankan Pengecekan Auth saat App Dibuka
+      checkAuth();
+    </script>
+  </body>
+</html>

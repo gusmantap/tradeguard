@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="16" fill="#0B0E11"/>
+  
+  <!-- Zones -->
+  <rect x="64" y="140" width="384" height="30" fill="#FF3D00" fill-opacity="0.1" rx="4"/>
+  <path d="M64 155H448" stroke="#FF3D00" stroke-width="2" stroke-dasharray="4 4"/>
+  
+  <rect x="64" y="340" width="384" height="30" fill="#00C853" fill-opacity="0.1" rx="4"/>
+  <path d="M64 355H448" stroke="#00C853" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <!-- Candles -->
+  <rect x="100" y="250" width="30" height="60" fill="#00C853" rx="4"/>
+  <line x1="115" y1="240" x2="115" y2="330" stroke="#00C853" stroke-width="4"/>
+
+  <rect x="160" y="200" width="30" height="80" fill="#FF3D00" rx="4"/>
+  <line x1="175" y1="155" x2="175" y2="300" stroke="#FF3D00" stroke-width="4"/>
+
+  <rect x="220" y="280" width="30" height="70" fill="#00C853" rx="4"/>
+  <line x1="235" y1="270" x2="235" y2="355" stroke="#00C853" stroke-width="4"/>
+  
+  <rect x="280" y="220" width="30" height="50" fill="#FF3D00" rx="4"/>
+  <line x1="295" y1="200" x2="295" y2="280" stroke="#FF3D00" stroke-width="4"/>
+
+  <!-- Warning Symbol -->
+  <circle cx="256" cy="256" r="100" stroke="#FFCC00" stroke-width="8" stroke-dasharray="16 8"/>
+  <path d="M256 180V280" stroke="#FFCC00" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="256" cy="320" r="8" fill="#FFCC00"/>
+</svg>
