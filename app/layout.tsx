@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { BottomNav } from "@/components/layout/BottomNav";
 
 const inter = Inter({ subsets: ["latin"] });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -20,12 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${jetbrainsMono.variable} bg-background text-foreground antialiased pb-20 pt-16`}>
-        <Header />
-        <main className="min-h-screen px-4 py-6 max-w-md mx-auto">
-            {children}
-        </main>
-        <BottomNav />
+      <body className={`${inter.className} ${jetbrainsMono.variable} bg-background text-foreground antialiased`}>
+        {children}
       </body>
     </html>
   );

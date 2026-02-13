@@ -377,7 +377,7 @@ export default function AnalyzePage() {
        };
    
        storage.saveSetup(newResult);
-       router.push("/journal"); 
+       router.push("/app/journal"); 
   };
 
   const getScoreColor = (score: number) => {

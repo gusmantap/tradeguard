@@ -60,7 +60,7 @@ function CreateJournalContent() {
     // Or just "Win" / "Loss" / "BE".
     
     storage.saveJournal(entry);
-    router.push("/journal");
+    router.push("/app/journal");
   };
 
   return (

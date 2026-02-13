@@ -9,9 +9,9 @@ export function Header() {
 
   const getTitle = () => {
     if (pathname === "/") return "TradeGuard";
-    if (pathname.startsWith("/analyze")) return "Analyze Setup";
-    if (pathname.startsWith("/journal")) return "Trade Journal";
-    if (pathname.startsWith("/settings")) return "Settings";
+    if (pathname.startsWith("/app/analyze")) return "Analyze Setup";
+    if (pathname.startsWith("/app/journal")) return "Trade Journal";
+    if (pathname.startsWith("/app/settings")) return "Settings";
     return "TradeGuard";
   };
 

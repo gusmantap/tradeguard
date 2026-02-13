@@ -10,17 +10,17 @@ export function BottomNav() {
   const navItems = [
     {
       label: "Analyze",
-      href: "/analyze",
+      href: "/app/analyze",
       icon: LineChart,
     },
     {
       label: "Journal",
-      href: "/journal",
+      href: "/app/journal",
       icon: BookOpen,
     },
     {
       label: "Settings",
-      href: "/settings",
+      href: "/app/settings",
       icon: Settings,
     },
   ];

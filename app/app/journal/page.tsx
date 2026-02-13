@@ -18,7 +18,7 @@ export default function JournalPage() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-trading-text-primary">Trade Journal</h1>
         {/* <button 
-            onClick={() => router.push('/analyze')}
+            onClick={() => router.push('/app/analyze')}
             className="p-2 bg-trading-primary rounded-full text-white shadow-lg shadow-blue-900/20"
         >
             <Plus size={24} />
@@ -29,7 +29,7 @@ export default function JournalPage() {
             <div className="flex flex-col items-center justify-center h-64 text-trading-text-muted space-y-4">
                 <p>No journal entries yet.</p>
                 <button 
-                    onClick={() => router.push('/analyze')}
+                    onClick={() => router.push('/app/analyze')}
                     className="text-trading-primary font-medium hover:underline"
                 >
                     Start a new analysis
