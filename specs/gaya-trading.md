@@ -104,3 +104,49 @@ Step 3: Change of Character (ChoCH)
 Q: Di timeframe entry (M15), apakah trend sudah berubah searah H1?
 
 Valid: M15 baru saja membuat Higher High (untuk Buy).
+
+# Structural Trend Continuation
+
+Fokus: Ikut trend yang sudah berjalan, entry saat retracement sehat.
+
+Step 1: HTF Structure (H1/H4)
+
+Q: Apakah struktur jelas trending?
+
+Valid Buy:
+
+HH & HL konsisten
+
+Tidak ada sweep besar berlawanan
+
+Invalid:
+
+Sideways / structure patah
+
+Step 2: Pullback Quality
+
+Q: Apakah retracement sehat?
+
+Valid:
+
+Koreksi 38–61%
+
+Tidak break HL sebelumnya
+
+Volume melemah saat retrace
+
+Invalid:
+
+Retrace terlalu dalam (break structure)
+
+Retrace terlalu dangkal (risk jelek)
+
+Step 3: Continuation Confirmation
+
+Q: Apakah ada BOS kecil searah trend?
+
+Valid:
+
+Break high terakhir dengan body kuat
+
+Close jelas di atas resistance minor

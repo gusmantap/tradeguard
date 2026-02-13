@@ -266,6 +266,44 @@ const TRADING_STYLES: TradingStyle[] = [
         ]
       }
     ]
+  },
+  {
+    id: "structural_trend",
+    name: "Structural Trend Continuation",
+    description: "Trend Follow | Entry on Retracement",
+    icon: TrendingUp,
+    questions: [
+      {
+        id: "htf_structure",
+        title: "HTF Structure (H1/H4)",
+        question: "Apakah struktur jelas trending?",
+        timeframe: "H1 / H4",
+        options: [
+          { value: "trending", label: "Clear Trend", description: "HH & HL Konsisten", score: 20, icon: IconTrendUp, color: "text-trading-success" },
+          { value: "sideways", label: "Sideways / Broken", description: "Structure Patah / Ragu", score: -50, icon: IconSideways, color: "text-trading-danger" }
+        ]
+      },
+      {
+        id: "pullback_quality",
+        title: "Pullback Quality",
+        question: "Apakah retracement sehat?",
+        timeframe: "M15",
+        options: [
+          { value: "healthy", label: "Healthy Retrace", description: "Fib 38-61% & Low Vol", score: 20, icon: IconFibGolden },
+          { value: "bad", label: "Deep / Shallow", description: "Break Structure / Risk Jelek", score: -20, icon: IconFibInvalid, color: "text-trading-danger" }
+        ]
+      },
+      {
+        id: "continuation_bos",
+        title: "Continuation Confirmation",
+        question: "Apakah ada BOS kecil searah trend?",
+        timeframe: "M5 / M15",
+        options: [
+          { value: "valid_bos", label: "Valid BOS", description: "Body Break Strong", score: 20, icon: IconBOS },
+          { value: "no_bos", label: "No Break / Wick", description: "Belum close di atas resistance", score: 0, icon: IconMicroFakeout, color: "text-trading-warning" }
+        ]
+      }
+    ]
   }
 ];
 
